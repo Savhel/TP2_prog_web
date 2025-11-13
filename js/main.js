@@ -600,6 +600,116 @@ function addToCart(product, quantity = 1) {
     }
 
 
+    function initProductQuantityControls() {
+        document.querySelectorAll('[data-quantity-selector]').forEach((selector) => {
+            const input = selector.querySelector('[data-quantity-input]');
+            const decrease = selector.querySelector('[data-quantity-decrease]');
+            const increase = selector.querySelector('[data-quantity-increase]');
+
+            if (decrease && input) {
+                decrease.addEventListener('click', () => {
+                    const current = Number(input.value) || 1;
+                    input.value = Math.max(1, current - 1);
+                });
+            }
+
+            if (increase && input) {
+                increase.addEventListener('click', () => {
+                    const current = Number(input.value) || 1;
+                    input.value = current + 1;
+                });
+            }
+
+            if (input) {
+                input.addEventListener('change', () => {
+                    input.value = Math.max(1, Number(input.value) || 1);
+                });
+            }
+        });
+    }
+
+    function initCartTableListeners() {
+        const cartTableBody = document.querySelector('[data-cart-items]');
+        if (!cartTableBody || cartTableBody.dataset.bound === 'true') {
+            return;
+        }
+        cartTableBody.dataset.bound = 'true';
+
+        cartTableBody.addEventListener('click', (event) => {
+            const decreaseBtn = event.target.closest('[data-cart-decrease]');
+            const increaseBtn = event.target.closest('[data-cart-increase]');
+            const removeBtn = event.target.closest('[data-cart-remove]');
+
+            if (decreaseBtn) {
+                const id = decreaseBtn.dataset.cartDecrease;
+                const data = loadCart();
+                const item = data.items.find((entry) => entry.id === id);
+                if (item && item.quantity > 1) {
+                    setCartItemQuantity(id, item.quantity - 1);
+                }
+            }
+
+            if (increaseBtn) {
+                const id = increaseBtn.dataset.cartIncrease;
+                const data = loadCart();
+                const item = data.items.find((entry) => entry.id === id);
+                if (item) {
+                    setCartItemQuantity(id, item.quantity + 1);
+                }
+            }
+
+            if (removeBtn) {
+                const id = removeBtn.dataset.cartRemove;
+                removeCartItem(id);
+            }
+        });
+
+        cartTableBody.addEventListener('change', (event) => {
+            const input = event.target.closest('input[data-cart-input]');
+            if (!input) {
+                return;
+            }
+            const id = input.dataset.cartInput;
+            const value = Math.max(1, Number(input.value) || 1);
+            setCartItemQuantity(id, value);
+        });
+    }
+
+    function initCartPromoControls() {
+        const cartPromoToggle = document.querySelector('[data-cart-toggle-promo]');
+        const cartPromoSection = document.querySelector('[data-cart-promo]');
+        const cartPromoApply = document.querySelector('[data-cart-apply-promo]');
+        const cartPromoInput = document.querySelector('[data-cart-promo-input]');
+        const cartPromoFeedback = document.querySelector('[data-cart-promo-feedback]');
+
+        if (cartPromoToggle) {
+            cartPromoToggle.addEventListener('click', () => {
+                if (!cartPromoSection) {
+                    return;
+                }
+                const shouldOpen = cartPromoSection.hidden;
+                cartPromoSection.hidden = !shouldOpen;
+                cartPromoToggle.textContent = shouldOpen ? 'Masquer le code' : 'Ajouter un code';
+                if (shouldOpen) {
+                    cartPromoInput?.focus();
+                } else if (cartPromoFeedback) {
+                    cartPromoFeedback.textContent = '';
+                    cartPromoFeedback.classList.remove('is-success', 'is-error');
+                }
+            });
+        }
+
+        if (cartPromoApply && cartPromoInput) {
+            cartPromoApply.addEventListener('click', () => {
+                const { success, message } = applyPromo(cartPromoInput.value);
+                if (cartPromoFeedback) {
+                    cartPromoFeedback.textContent = message;
+                    cartPromoFeedback.classList.toggle('is-success', success);
+                    cartPromoFeedback.classList.toggle('is-error', !success);
+                }
+            });
+        }
+    }
 
 
 
