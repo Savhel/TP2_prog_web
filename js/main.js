@@ -714,3 +714,118 @@ function addToCart(product, quantity = 1) {
 
 
 });
+function initCheckoutButton() {
+        const checkoutButton = document.querySelector('[data-checkout-button]');
+        if (!checkoutButton) {
+            return;
+        }
+        checkoutButton.addEventListener('click', () => {
+            const data = loadCart();
+            if (data.items.length === 0) {
+                announce('Votre panier est vide.');
+                const cartPromoFeedback = document.querySelector('[data-cart-promo-feedback]');
+                if (cartPromoFeedback) {
+                    cartPromoFeedback.textContent = 'Ajoutez des produits avant de poursuivre.';
+                    cartPromoFeedback.classList.add('is-error');
+                }
+                return;
+            }
+            window.location.href = 'checkout.html';
+        });
+    }
+
+    function initCheckoutForm() {
+        const checkoutForm = document.querySelector('[data-checkout-form]');
+        if (!checkoutForm) {
+            return;
+        }
+
+        const checkoutSuccess = document.querySelector('[data-checkout-success]');
+        const checkoutSuccessText = document.querySelector('[data-checkout-success-text]');
+        const checkoutSummary = document.querySelector('[data-checkout-summary]');
+        const checkoutPromoInput = checkoutForm.querySelector('input[name="promo"]');
+
+        const data = loadCart();
+        const activePromo = getActivePromo(data);
+        if (checkoutPromoInput && activePromo) {
+            checkoutPromoInput.value = activePromo.code;
+        }
+
+        if (checkoutPromoInput) {
+            checkoutPromoInput.addEventListener('change', () => {
+                const { message } = applyPromo(checkoutPromoInput.value);
+                announce(message);
+            });
+        }
+
+        checkoutForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const currentData = loadCart();
+            if (currentData.items.length === 0) {
+                announce('Le panier est vide, la commande ne peut pas être créée.');
+                return;
+            }
+
+            const formData = new FormData(checkoutForm);
+            const promoValue = (formData.get('promo') || '').toString();
+            if (promoValue) {
+                applyPromo(promoValue);
+            }
+            const customerName = formData.get('firstname') || 'client·e';
+            const orderId = `VEG-${Date.now().toString().slice(-6)}`;
+
+            console.group('Commande simulée');
+            console.log('Numéro de commande :', orderId);
+            console.log('Données client :', Object.fromEntries(formData.entries()));
+            console.log('Panier :', currentData.items);
+            console.groupEnd();
+
+            clearCart();
+
+            checkoutForm.setAttribute('hidden', 'true');
+            checkoutSummary?.setAttribute('hidden', 'true');
+            if (checkoutSuccess) {
+                checkoutSuccess.hidden = false;
+            }
+            if (checkoutSuccessText) {
+                checkoutSuccessText.textContent = `Merci ${customerName}, votre commande ${orderId} a bien été enregistrée. Nous revenons vers vous sous 2 heures pour confirmer la livraison.`;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            announce('Votre commande a été enregistrée avec succès.');
+        });
+    }
+
+    function setupRevealAnimations() {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealEls = document.querySelectorAll('[data-reveal]');
+
+        if (prefersReducedMotion) {
+            revealEls.forEach((el) => el.classList.add('is-visible'));
+            return;
+        }
+
+        if (!revealEls.length) {
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.2,
+                rootMargin: '0px 0px -10% 0px',
+            }
+        );
+
+        revealEls.forEach((el, index) => {
+            el.style.setProperty('--reveal-delay', `${index * 60}ms`);
+            observer.observe(el);
+        });
+    }
