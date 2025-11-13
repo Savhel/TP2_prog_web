@@ -94,6 +94,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { subtotal, discount, delivery, total, promo };
     }
+function addToCart(product, quantity = 1) {
+        if (!product?.id || !product?.name) {
+            return;
+        }
+
+        const finalQuantity = Math.max(1, Number(quantity) || 1);
+        const data = loadCart();
+        const index = data.items.findIndex((item) => item.id === product.id);
+
+        if (index >= 0) {
+            data.items[index].quantity += finalQuantity;
+        } else {
+            data.items.push({
+                id: product.id,
+                name: product.name,
+                price: Math.max(0, Number(product.price) || 0),
+                quantity: finalQuantity,
+                image: product.image || '',
+                url: product.url || 'product-single.html',
+                category: product.category || '',
+            });
+        }
+
+        saveCart(data);
+        refreshCartUI();
+        announce(`« ${product.name} » a été ajouté au panier.`);
+    }
+
+    function setCartItemQuantity(productId, quantity) {
+        const data = loadCart();
+        const item = data.items.find((entry) => entry.id === productId);
+        if (!item) {
+            return;
+        }
+
+        item.quantity = Math.max(1, Number(quantity) || 1);
+        saveCart(data);
+        refreshCartUI();
+    }
+
+    function removeCartItem(productId) {
+        const data = loadCart();
+        const index = data.items.findIndex((entry) => entry.id === productId);
+        if (index === -1) {
+            return;
+        }
+
+        const [removed] = data.items.splice(index, 1);
+        saveCart(data);
+        refreshCartUI();
+        announce(`« ${removed.name} » a été retiré du panier.`);
+    }
+
+    function clearCart() {
+        saveCart({ items: [], promo: null });
+        refreshCartUI();
+    }
+
+    function applyPromo(code) {
+        const data = loadCart();
+
+        if (!code || !code.trim()) {
+            data.promo = null;
+            saveCart(data);
+            refreshCartUI();
+            return { success: true, message: 'Aucune promotion appliquée.' };
+        }
+
+        const normalized = code.trim().toUpperCase();
+        const promo = PROMO_CODES[normalized];
+
+        if (!promo) {
+            return { success: false, message: "Ce code n'est pas valide." };
+        }
+
+        data.promo = { code: normalized };
+        saveCart(data);
+        refreshCartUI();
+        return { success: true, message: `Code ${normalized} appliqué : ${promo.label}.` };
+    }
 
 
 
