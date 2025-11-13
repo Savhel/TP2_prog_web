@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mqDesktop = window.matchMedia('(min-width: 961px)');
 
 
-
+         
         function sanitizeCartData(raw) {
         const data = { items: [], promo: null };
         if (raw && typeof raw === 'object') {
@@ -788,7 +788,7 @@ function initCheckoutButton() {
             toggleHeaderState();
             window.addEventListener('scroll', toggleHeaderState, { passive: true });
     }
-
+   
     setupNavigation();
     setupHeaderOnScroll();
     setupRevealAnimations();
