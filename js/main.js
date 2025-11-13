@@ -829,3 +829,91 @@ function initCheckoutButton() {
             observer.observe(el);
         });
     }
+    function setupNavigation() {
+            if (!navToggle || !navMenu) {
+                return;
+            }
+
+            const navOverlay = document.createElement('div');
+            navOverlay.className = 'nav-overlay';
+            body.appendChild(navOverlay);
+            let isOpen = false;
+
+            function setNavState(open) {
+                isOpen = open;
+                navMenu.classList.toggle('is-open', open);
+                navToggle.setAttribute('aria-expanded', String(open));
+                body.classList.toggle('has-nav-open', open);
+                navOverlay.classList.toggle('is-visible', open);
+
+                if (open) {
+                    const firstLink = navMenu.querySelector(focusableSelectors);
+                    firstLink?.focus({ preventScroll: true });
+                } else {
+                    navToggle.focus({ preventScroll: true });
+                }
+            }
+
+            navToggle.addEventListener('click', () => {
+                setNavState(!isOpen);
+            });
+
+            navOverlay.addEventListener('click', () => setNavState(false));
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && isOpen) {
+                    setNavState(false);
+                }
+            });
+
+            navMenu.addEventListener('keydown', (event) => {
+                if (!isOpen) {
+                    return;
+                }
+
+                if (event.key === 'Escape') {
+                    setNavState(false);
+                    return;
+                }
+
+                if (event.key === 'Tab') {
+                    const focusables = Array.from(navMenu.querySelectorAll(focusableSelectors));
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+
+                    if (event.shiftKey && document.activeElement === first) {
+                        event.preventDefault();
+                        last.focus();
+                    } else if (!event.shiftKey && document.activeElement === last) {
+                        event.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+
+            navMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    if (!mqDesktop.matches) {
+                        setNavState(false);
+                    }
+                });
+            });
+
+            mqDesktop.addEventListener('change', () => {
+                if (mqDesktop.matches) {
+                    setNavState(false);
+                }
+            });
+    }
+
+    function setupHeaderOnScroll() {
+            if (!header) {
+                return;
+            }
+            const toggleHeaderState = () => {
+                header.classList.toggle('is-condensed', window.scrollY > 24);
+            };
+            toggleHeaderState();
+            window.addEventListener('scroll', toggleHeaderState, { passive: true });
+    }
+
