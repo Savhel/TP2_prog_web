@@ -175,131 +175,6 @@ function addToCart(product, quantity = 1) {
         return { success: true, message: `Code ${normalized} appliqué : ${promo.label}.` };
     }
 
-    function updateCartBadge(data) {
-        const count = data.items.reduce((total, item) => total + item.quantity, 0);
-        const label =
-            count === 0 ? '0 article dans le panier' : `${count} article${count > 1 ? 's' : ''} dans le panier`;
-
-        document.querySelectorAll('[data-cart-count]').forEach((badge) => {
-            badge.textContent = count;
-            badge.setAttribute('aria-label', label);
-        });
-    }
-
-    function renderCartPage(data) {
-        const cartTableBody = document.querySelector('[data-cart-items]');
-        if (!cartTableBody) {
-            return;
-        }
-
-        const cartMessage = document.querySelector('[data-cart-message]');
-        const cartSubtotalEl = document.querySelector('[data-cart-subtotal]');
-        const cartDeliveryEl = document.querySelector('[data-cart-delivery]');
-        const cartTotalEl = document.querySelector('[data-cart-total]');
-        const cartDiscountRow = document.querySelector('[data-cart-discount-row]');
-        const cartDiscountEl = document.querySelector('[data-cart-discount]');
-        const cartPromoToggle = document.querySelector('[data-cart-toggle-promo]');
-        const cartPromoSection = document.querySelector('[data-cart-promo]');
-        const cartPromoInput = document.querySelector('[data-cart-promo-input]');
-        const cartPromoFeedback = document.querySelector('[data-cart-promo-feedback]');
-        const cartNote = document.querySelector('[data-cart-note]');
-
-        const totals = getTotals(data);
-
-        if (data.items.length === 0) {
-            cartTableBody.innerHTML = `
-                <tr>
-                    <td colspan="5">
-                        <div class="cart-empty">
-                            <h2>Votre panier est vide</h2>
-                            <p>Ajoutez vos fruits et légumes biologiques préférés pour commencer votre commande.</p>
-                            <a class="btn btn--primary" href="shop.html">Découvrir la boutique</a>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            cartMessage && (cartMessage.hidden = true);
-            if (cartPromoSection) {
-                cartPromoSection.hidden = true;
-            }
-            if (cartPromoToggle) {
-                cartPromoToggle.textContent = 'Ajouter un code';
-            }
-        } else {
-            cartTableBody.innerHTML = '';
-            data.items.forEach((item) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <div class="table__meta">
-                            <div class="table__thumb">
-                                <img src="${item.image || 'images/product-1.jpg'}" alt="${item.name}">
-                            </div>
-                            <div>
-                                <strong>${item.name}</strong>
-                                ${item.category ? `<p class="table__note">${item.category}</p>` : ''}
-                            </div>
-                        </div>
-                    </td>
-                    <td>${formatPrice(item.price)}</td>
-                    <td>
-                        <div class="quantity-selector">
-                            <button type="button" aria-label="Diminuer la quantité de ${item.name}" data-cart-decrease="${item.id}">−</button>
-                            <input type="number" value="${item.quantity}" min="1" aria-label="Quantité pour ${item.name}" data-cart-input="${item.id}">
-                            <button type="button" aria-label="Augmenter la quantité de ${item.name}" data-cart-increase="${item.id}">+</button>
-                        </div>
-                    </td>
-                    <td>${formatPrice(item.price * item.quantity)}</td>
-                    <td><button class="link-remove" type="button" data-cart-remove="${item.id}">Retirer</button></td>
-                `;
-                cartTableBody.appendChild(row);
-            });
-            cartMessage && (cartMessage.hidden = false);
-        }
-
-        cartSubtotalEl && (cartSubtotalEl.textContent = formatPrice(totals.subtotal));
-        cartDeliveryEl && (cartDeliveryEl.textContent = totals.delivery === 0 ? 'Offerte' : formatPrice(totals.delivery));
-        cartTotalEl && (cartTotalEl.textContent = formatPrice(totals.total));
-
-        if (cartDiscountRow && cartDiscountEl) {
-            if (totals.discount > 0) {
-                cartDiscountRow.hidden = false;
-                cartDiscountEl.textContent = `- ${formatPrice(totals.discount)}`;
-            } else {
-                cartDiscountRow.hidden = true;
-                cartDiscountEl.textContent = '-0 FCFA';
-            }
-        }
-
-        if (cartPromoInput) {
-            cartPromoInput.value = totals.promo ? totals.promo.code : '';
-        }
-
-        if (cartPromoFeedback) {
-            cartPromoFeedback.textContent = '';
-            cartPromoFeedback.classList.remove('is-success', 'is-error');
-        }
-
-        if (cartPromoToggle) {
-            if (!cartPromoSection || cartPromoSection.hidden) {
-                cartPromoToggle.textContent = totals.promo ? 'Modifier le code' : 'Ajouter un code';
-            } else {
-                cartPromoToggle.textContent = 'Masquer le code';
-            }
-        }
-
-        if (cartNote) {
-            if (totals.subtotal === 0) {
-                cartNote.textContent = 'Paiement sécurisé · Orange Money, MTN, cartes Visa/Mastercard';
-            } else if (totals.subtotal < DELIVERY_FREE_THRESHOLD) {
-                const remaining = DELIVERY_FREE_THRESHOLD - totals.subtotal;
-                cartNote.textContent = `Ajoutez ${formatPrice(remaining)} pour profiter de la livraison offerte.`;
-            } else {
-                cartNote.textContent =
-                    'Livraison offerte sur votre commande. Paiement sécurisé · Orange Money, MTN, cartes Visa/Mastercard';
-            }
-        }
-    }
 
     function renderCheckoutSummary(data) {
         const checkoutSummary = document.querySelector('[data-checkout-summary]');
@@ -711,9 +586,6 @@ function addToCart(product, quantity = 1) {
         }
     }
 
-
-
-});
 function initCheckoutButton() {
         const checkoutButton = document.querySelector('[data-checkout-button]');
         if (!checkoutButton) {
@@ -917,7 +789,7 @@ function initCheckoutButton() {
             window.addEventListener('scroll', toggleHeaderState, { passive: true });
     }
 
-setupNavigation();
+    setupNavigation();
     setupHeaderOnScroll();
     setupRevealAnimations();
     initProductQuantityControls();
@@ -938,3 +810,4 @@ setupNavigation();
             refreshCartUI();
         }
     });
+});
