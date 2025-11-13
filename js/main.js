@@ -549,6 +549,58 @@ function addToCart(product, quantity = 1) {
     }
 
 
+    function getProductFromElement(trigger) {
+        const card = trigger.closest('[data-product-card]');
+        if (!card) {
+            return null;
+        }
+        return {
+            id: card.dataset.productId,
+            name: card.dataset.productName,
+            price: Number(card.dataset.productPrice) || 0,
+            image: card.dataset.productImage || '',
+            url: card.dataset.productUrl || 'product-single.html',
+            category: card.dataset.productCategory || '',
+        };
+    }
+
+    function initAddToCartButtons() {
+        document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const product = getProductFromElement(button);
+                if (!product) {
+                    return;
+                }
+                let quantity = 1;
+                const quantityInput = button.closest('[data-product-card]')?.querySelector('[data-quantity-input]');
+                if (quantityInput) {
+                    quantity = Number(quantityInput.value) || 1;
+                }
+                addToCart(product, quantity);
+            });
+        });
+    }
+
+    function initBuyNowButtons() {
+        document.querySelectorAll('[data-buy-now]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const product = getProductFromElement(button);
+                if (!product) {
+                    return;
+                }
+                let quantity = 1;
+                const quantityInput = button.closest('[data-product-card]')?.querySelector('[data-quantity-input]');
+                if (quantityInput) {
+                    quantity = Number(quantityInput.value) || 1;
+                }
+                addToCart(product, quantity);
+                window.location.href = 'checkout.html';
+            });
+        });
+    }
+
+
+
 
 
 });
