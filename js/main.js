@@ -917,3 +917,24 @@ function initCheckoutButton() {
             window.addEventListener('scroll', toggleHeaderState, { passive: true });
     }
 
+setupNavigation();
+    setupHeaderOnScroll();
+    setupRevealAnimations();
+    initProductQuantityControls();
+    initAddToCartButtons();
+    initBuyNowButtons();
+    initCartTableListeners();
+    initCartPromoControls();
+    initCheckoutButton();
+    initCheckoutForm();
+
+    refreshCartUI();
+
+    window.addEventListener('pageshow', refreshCartUI);
+    window.addEventListener('load', refreshCartUI);
+    window.addEventListener('storage', refreshCartUI);
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            refreshCartUI();
+        }
+    });
