@@ -17,7 +17,7 @@
         <div class="container top-bar__inner">
             <div class="top-bar__group">
                 <span aria-hidden="true">📞</span>
-                <span>+237 673 96 23 37</span>
+                <span>+237 673 962 337</span>
             </div>
             <div class="top-bar__group">
                 <span aria-hidden="true">✉️</span>
@@ -58,18 +58,16 @@
             <img class="hero__background" src="images/bg_1.jpg" alt="">
             <div class="container">
                 <div class="hero__content" data-reveal>
-                    <span class="hero__eyebrow" data-home-hero-eyebrow>Agriculture régénérative</span>
-                    <h1 class="hero__title" data-home-hero-title>Des fruits et légumes bio, récoltés le matin et livrés le soir.</h1>
-                    <p class="hero__lead" data-home-hero-lead>
-                        Nous collaborons avec 35 fermes partenaires autour de Yaoundé pour offrir une alimentation saine,
+                    <span class="hero__eyebrow">Agriculture régénérative</span>
+                    <h1 class="hero__title">Des fruits et légumes bio, récoltés le matin et livrés le soir.</h1>
+                    <p class="hero__lead">
+                        Nous collaborons avec plus de 35 fermes partenaires autour de Yaoundé pour offrir une alimentation saine,
                         locale et respectueuse de la planète.
                     </p>
                     <div class="hero__actions">
                         <a class="btn btn--primary" href="shop.html">Découvrir la boutique</a>
                         <a class="btn btn--ghost" href="about.html">Visiter nos fermes</a>
                     </div>
-                    <div class="summary-card hero__highlight" data-home-hero-highlight></div>
-                    <p class="section__note" data-home-status></p>
                 </div>
             </div>
         </section>
@@ -98,7 +96,7 @@
                     <article class="card">
                         <span class="card__icon" aria-hidden="true">🥗</span>
                         <h3 class="card__title">Menus inspirants</h3>
-                        <p class="card__body">Recevez chaque semaine une fiche recette équilibrée élaborée par notre cheffe Alima.</p>
+                        <p class="card__body">Recevez chaque semaine une fiche recette équilibrée élaborée par notre cheffe Megane.</p>
                     </article>
                     <article class="card">
                         <span class="card__icon" aria-hidden="true">♻️</span>
@@ -115,11 +113,37 @@
                     <span class="section__eyebrow">Explorez nos familles</span>
                     <h2 class="section__title">Des produits pour chaque moment de la journée</h2>
                 </header>
-                <div class="category-grid" data-home-categories>
+                <div class="category-grid">
                     <article class="category-card">
+                        <img class="category-card__img" src="images/category-1.jpg" alt="Fruits colorés disposés sur une table">
                         <div class="category-card__content">
-                            <h3 class="category-card__title">Chargement des catégories...</h3>
-                            <p>Les suggestions apparaîtront automatiquement.</p>
+                            <h3 class="category-card__title">Fruits vitaminés</h3>
+                            <p>Kiwi, ananas, papaye, mangue&nbsp;: faites le plein d'énergie dès le matin.</p>
+                            <a class="pill" href="shop.html">Voir la sélection</a>
+                        </div>
+                    </article>
+                    <article class="category-card">
+                        <img class="category-card__img" src="images/category-2.jpg" alt="Légumes verts">
+                        <div class="category-card__content">
+                            <h3 class="category-card__title">Légumes de saison</h3>
+                            <p>Des récoltes tournantes pour cuisiner selon le cycle des saisons.</p>
+                            <a class="pill" href="shop.html">Composer un panier</a>
+                        </div>
+                    </article>
+                    <article class="category-card">
+                        <img class="category-card__img" src="images/category-3.jpg" alt="Bouteilles de jus naturel">
+                        <div class="category-card__content">
+                            <h3 class="category-card__title">Jus pressés</h3>
+                            <p>Des jus cold-press sans sucres ajoutés, parfaits pour la pause detox.</p>
+                            <a class="pill" href="shop.html">Commander mes jus</a>
+                        </div>
+                    </article>
+                    <article class="category-card">
+                        <img class="category-card__img" src="images/category-4.jpg" alt="Fruits et légumes séchés">
+                        <div class="category-card__content">
+                            <h3 class="category-card__title">Sélection gourmande</h3>
+                            <p>Fruits séchés, chips de plantain, confitures artisanales et condiments.</p>
+                            <a class="pill" href="shop.html">Faire le plein</a>
                         </div>
                     </article>
                 </div>
@@ -129,7 +153,7 @@
         <section class="section section--tight" data-reveal>
             <div class="container">
                 <div class="layout-panel">
-                    <div class="stat-grid" data-home-stats>
+                    <div class="stat-grid">
                         <div class="stat-card">
                             <p class="stat-card__value">35</p>
                             <p class="stat-card__label">Producteurs partenaires</p>
@@ -158,11 +182,65 @@
                     <h2 class="section__title">Nos best-sellers de la semaine</h2>
                     <p class="section__subtitle">Disponibles en quantité limitée. Tous les prix incluent la livraison dans Yaoundé et Douala.</p>
                 </header>
-                <div class="product-grid" data-home-featured-products>
-                    <article class="product-card">
+                <div class="product-grid">
+                    <article class="product-card" data-reveal data-product-card data-product-id="panier-vitamine-8kg" data-product-name="Panier vitaminé 8kg" data-product-price="12500" data-product-image="images/product-1.jpg" data-product-url="product-single.html" data-product-category="Panier découverte">
+                        <div class="product-card__image">
+                            <img src="images/product-1.jpg" alt="Panier de poivrons rouges et verts">
+                        </div>
                         <div class="product-card__body">
-                            <h3 class="product-card__title">Chargement des produits...</h3>
-                            <p>Cette section sera alimentée automatiquement par l'API.</p>
+                            <span class="product-card__category">Panier découverte</span>
+                            <h3 class="product-card__title"><a href="product-single.html">Panier vitaminé 8kg</a></h3>
+                            <p>Un assortiment de fruits exotiques à partager en famille.</p>
+                            <p class="product-card__price">12&nbsp;500&nbsp;FCFA</p>
+                            <div class="product-card__actions">
+                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                                <a class="btn btn--outline" href="product-single.html">Voir détails</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card" data-reveal data-product-card data-product-id="box-famille-veggie" data-product-name="Box famille veggie" data-product-price="15900" data-product-image="images/product-5.jpg" data-product-url="product-single.html" data-product-category="Box hebdo">
+                        <div class="product-card__image">
+                            <img src="images/product-5.jpg" alt="Salade verte avec tomates cerises">
+                        </div>
+                        <div class="product-card__body">
+                            <span class="product-card__category">Box hebdo</span>
+                            <h3 class="product-card__title"><a href="product-single.html">Box famille veggie</a></h3>
+                            <p>14 variétés de légumes bio pour 5 repas complets.</p>
+                            <p class="product-card__price">15&nbsp;900&nbsp;FCFA</p>
+                            <div class="product-card__actions">
+                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                                <a class="btn btn--outline" href="product-single.html">Voir détails</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card" data-reveal data-product-card data-product-id="haricots-verts-croquants" data-product-name="Haricots verts croquants" data-product-price="2400" data-product-image="images/product-3.jpg" data-product-url="product-single.html" data-product-category="Primeur">
+                        <div class="product-card__image">
+                            <img src="images/product-3.jpg" alt="Haricots verts frais">
+                        </div>
+                        <div class="product-card__body">
+                            <span class="product-card__category">Primeur</span>
+                            <h3 class="product-card__title"><a href="product-single.html">Haricots verts croquants</a></h3>
+                            <p>Récoltés à Obala, conditionnés sous 2 heures.</p>
+                            <p class="product-card__price">2&nbsp;400&nbsp;FCFA / kg</p>
+                            <div class="product-card__actions">
+                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                                <a class="btn btn--outline" href="product-single.html">Voir détails</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card" data-reveal data-product-card data-product-id="pack-detox-3-jours" data-product-name="Pack detox 3 jours" data-product-price="17500" data-product-image="images/product-8.jpg" data-product-url="product-single.html" data-product-category="Atelier jus">
+                        <div class="product-card__image">
+                            <img src="images/product-8.jpg" alt="Bouteilles de jus">
+                        </div>
+                        <div class="product-card__body">
+                            <span class="product-card__category">Atelier jus</span>
+                            <h3 class="product-card__title"><a href="product-single.html">Pack detox 3 jours</a></h3>
+                            <p>Six jus pressés à froid et deux shots booster au gingembre.</p>
+                            <p class="product-card__price">17&nbsp;500&nbsp;FCFA</p>
+                            <div class="product-card__actions">
+                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                                <a class="btn btn--outline" href="product-single.html">Voir détails</a>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -227,8 +305,20 @@
                     <span class="section__eyebrow">Ils nous font confiance</span>
                     <h2 class="section__title">Ce que disent nos clients</h2>
                 </header>
-                <p class="section__note" data-home-testimonials-status></p>
-                <div class="testimonial-grid" data-home-testimonials></div>
+                <div class="testimonial-grid">
+                    <article class="testimonial-card">
+                        <p class="testimonial-card__quote">«&nbsp;Les paniers BioPanier ont transformé notre cantine d'entreprise. Les salariés adorent la diversité et on réduit nos déchets alimentaires.&nbsp;»</p>
+                        <p class="testimonial-card__author">Clarisse, Responsable RSE chez Nexttel</p>
+                    </article>
+                    <article class="testimonial-card">
+                        <p class="testimonial-card__quote">«&nbsp;Je suis impressionnée par la fraîcheur des produits. Même mes enfants redemandent des légumes verts&nbsp;!&nbsp;»</p>
+                        <p class="testimonial-card__author">Awa, maman de trois enfants</p>
+                    </article>
+                    <article class="testimonial-card">
+                        <p class="testimonial-card__quote">«&nbsp;Le pack detox m'aide à relancer mon énergie après mes séances intensives. Livraison ponctuelle et service client impeccable.&nbsp;»</p>
+                        <p class="testimonial-card__author">Loïc, coach sportif</p>
+                    </article>
+                </div>
             </div>
         </section>
 
@@ -256,15 +346,14 @@
                 <div class="newsletter-card">
                     <div>
                         <h2 class="newsletter-card__title">Recevez chaque jeudi nos suggestions de menus et promos privées</h2>
-                        <p>Un email par semaine, pas de spam. Bonus&nbsp;: un ebook de 10 recettes végétales signé par la cheffe Alima.</p>
+                        <p>Un email par semaine, pas de spam. Bonus&nbsp;: un ebook de 10 recettes végétales signé par la cheffe Megane.</p>
                     </div>
-                    <form class="newsletter-card__form" action="#" method="post" data-newsletter-form data-newsletter-source="home-newsletter">
+                    <form class="newsletter-card__form" action="#" method="post">
                         <label class="sr-only" for="newsletter-email">Adresse e-mail</label>
                         <div class="input-group">
                             <input id="newsletter-email" type="email" name="email" placeholder="votrenom@email.com" required>
                         </div>
                         <button class="btn btn--primary" type="submit">Je m'inscris</button>
-                        <p class="form-note" data-newsletter-feedback></p>
                     </form>
                 </div>
             </div>
@@ -277,6 +366,10 @@
                 <div class="site-footer__brand">
                     <h3>BioPanier</h3>
                     <p>La plateforme qui relie directement les fermes bio camerounaises aux foyers et restaurants engagés.</p>
+                    <div class="tag-list">
+                        <span class="tag">Logistique verte</span>
+                        <span class="tag">Paiement sécurisé</span>
+                    </div>
                 </div>
                 <div class="site-footer__nav">
                     <h4>Explorer</h4>
@@ -299,7 +392,7 @@
                 <div class="site-footer__nav">
                     <h4>Contact</h4>
                     <ul>
-                        <li>+237 673 96 23 37/li>
+                        <li>+237 673 962 337</li>
                         <li><a href="mailto:hello@BioPanier.cm">hello@BioPanier.cm</a></li>
                         <li>Carrefour Bastos, Yaoundé</li>
                         <li>Lun - Sam&nbsp;: 7h - 20h</li>

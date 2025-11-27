@@ -374,9 +374,8 @@ body.has-nav-open {
 
 .hero__lead {
     font-size: 1.1rem;
-    /*color: rgba(245, 255, 227, 0.85);*/
+    color: rgba(0, 0, 0, 0.85);
     margin-bottom: 2.2rem;
-    color: var(--color-primary);
 }
 
 .hero__actions {
