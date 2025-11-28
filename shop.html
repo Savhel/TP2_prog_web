@@ -66,7 +66,7 @@
                     </p>
                     <div class="hero__actions">
                         <a class="btn btn--primary" href="#catalogue">Voir les nouveautés</a>
-                        <a class="btn btn--ghost" href="product-single.html">Exemple de fiche produit</a>
+<!--                        <a class="btn btn&#45;&#45;ghost" href="product-single.html">Exemple de fiche produit</a>-->
                     </div>
                 </div>
             </div>
@@ -76,8 +76,12 @@
             <div class="container">
                 <div class="filter-bar" role="search">
                     <div class="filter-bar__controls">
+                        <label class="sr-only" for="search-filter">Rechercher un produit</label>
+                        <input class="form-control" id="search-filter" type="search" name="q" placeholder="Rechercher un produit ou un ingrédient" autocomplete="off" data-search-filter>
+                    </div>
+                    <div class="filter-bar__controls">
                         <label class="sr-only" for="category-filter">Filtrer par catégorie</label>
-                        <select class="form-select" id="category-filter" name="category">
+                        <select class="form-select" id="category-filter" name="category" data-category-filter>
                             <option value="all">Toutes les catégories</option>
                             <option value="panier">Paniers hebdo</option>
                             <option value="fruits">Fruits</option>
@@ -87,17 +91,30 @@
                         </select>
                     </div>
                     <div class="filter-bar__controls">
+                        <label class="sr-only" for="badge-filter">Mise en avant</label>
+                        <select class="form-select" id="badge-filter" name="badge" data-badge-filter>
+                            <option value="all">Tous les highlights</option>
+                            <option value="best-seller">Best-sellers</option>
+                            <option value="nouveau">Nouveautés</option>
+                            <option value="box-hebdo">Box hebdo</option>
+                            <option value="cure-jus">Cures &amp; jus</option>
+                        </select>
+                    </div>
+                    <div class="filter-bar__controls">
+                        <label class="sr-only" for="price-min">Budget</label>
+                        <div class="filter-bar__range">
+                            <input class="form-control" id="price-min" type="number" placeholder="Min (FCFA)" inputmode="numeric" data-price-min>
+                            <input class="form-control" id="price-max" type="number" placeholder="Max (FCFA)" inputmode="numeric" data-price-max>
+                        </div>
+                    </div>
+                    <div class="filter-bar__controls">
                         <label class="sr-only" for="sort-filter">Trier par</label>
-                        <select class="form-select" id="sort-filter" name="sort">
+                        <select class="form-select" id="sort-filter" name="sort" data-sort-filter>
                             <option value="popular">Populaires</option>
                             <option value="new">Nouveautés</option>
                             <option value="price-asc">Prix croissant</option>
                             <option value="price-desc">Prix décroissant</option>
                         </select>
-                    </div>
-                    <div class="filter-bar__actions">
-                        <button class="btn btn--outline" type="button">Réinitialiser</button>
-                        <button class="btn btn--primary" type="button">Appliquer</button>
                     </div>
                 </div>
             </div>
@@ -110,134 +127,20 @@
                     <h2 class="section__title">Nos meilleures ventes de la semaine</h2>
                     <p class="section__subtitle">Profitez d'une remise de 10&nbsp;% à partir de 25&nbsp;000&nbsp;FCFA et de la livraison offerte dès 40&nbsp;000&nbsp;FCFA.</p>
                 </header>
-                <div class="product-grid">
-                    <article class="product-card" data-reveal data-product-card data-product-id="panier-essentiel-6kg" data-product-name="Panier Essentiel 6kg" data-product-price="10900" data-product-image="images/product-6.jpg" data-product-url="product-single.html" data-product-category="Paniers hebdo">
-                        <div class="product-card__image">
-                            <img src="images/product-6.jpg" alt="Panier de tomates cerises">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Paniers hebdo</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Panier Essentiel 6kg</a></h3>
-                            <p>Mix de 5 fruits et 8 légumes de saison pour 3 repas équilibrés.</p>
-                            <p class="product-card__price">10&nbsp;900&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="fraises-bafoussam" data-product-name="Fraises de Bafoussam" data-product-price="3800" data-product-image="images/product-2.jpg" data-product-url="product-single.html" data-product-category="Fruits">
-                        <div class="product-card__image">
-                            <img src="images/product-2.jpg" alt="Fraises fraîches">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Fruits</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Fraises de Bafoussam</a></h3>
-                            <p>Récoltées à la main, en barquette de 500 g, sans traitement.</p>
-                            <p class="product-card__price">3&nbsp;800&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="carottes-granny-bio" data-product-name="Carottes Granny Bio" data-product-price="2900" data-product-image="images/product-7.jpg" data-product-url="product-single.html" data-product-category="Fruits">
-                        <div class="product-card__image">
-                            <img src="images/product-7.jpg" alt="Pommes vertes">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Fruits</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Carottes Granny Bio</a></h3>
-                            <p>Croquantes et acidulées, cultivées sur la ferme d'Obala.</p>
-                            <p class="product-card__price">2&nbsp;900&nbsp;FCFA / kg</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="jus-green-glow" data-product-name="Jus Green Glow" data-product-price="2200" data-product-image="images/product-11.jpg" data-product-url="product-single.html" data-product-category="Jus pressés">
-                        <div class="product-card__image">
-                            <img src="images/category-3.jpg" alt="Jus vert en bouteille">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Jus pressés</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Jus Green Glow</a></h3>
-                            <p>Concombre, pomme, persil, citron vert. Pression à froid quotidienne.</p>
-                            <p class="product-card__price">2&nbsp;200&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="mix-crudites-15kg" data-product-name="Mix crudités 1,5kg" data-product-price="4500" data-product-image="images/product-5.jpg" data-product-url="product-single.html" data-product-category="Légumes">
-                        <div class="product-card__image">
-                            <img src="images/product-5.jpg" alt="Salade de crudités">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Légumes</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Mix crudités 1,5kg</a></h3>
-                            <p>Carotte, concombre, betterave, laitue croquante. Prêt à cuisiner.</p>
-                            <p class="product-card__price">4&nbsp;500&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="chou-rouge-tendre" data-product-name="Chou rouge tendre" data-product-price="1800" data-product-image="images/product-4.jpg" data-product-url="product-single.html" data-product-category="Légumes">
-                        <div class="product-card__image">
-                            <img src="images/product-4.jpg" alt="Chou rouge">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Légumes</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Chou rouge tendre</a></h3>
-                            <p>Texture croquante. Idéal pour salades et pickles maison.</p>
-                            <p class="product-card__price">1&nbsp;800&nbsp;FCFA / kg</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="mix-snacks-energetiques" data-product-name="Mix snacks énergétiques" data-product-price="5200" data-product-image="images/product-9.jpg" data-product-url="product-single.html" data-product-category="Épicerie fine">
-                        <div class="product-card__image">
-                            <img src="images/category-4.jpg" alt="Fruits secs">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Épicerie fine</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Mix snacks énergétiques</a></h3>
-                            <p>Noix de cajou grillées, ananas séché, chips de plantain.</p>
-                            <p class="product-card__price">5&nbsp;200&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="product-card" data-reveal data-product-card data-product-id="pack-decouverte-smoothies" data-product-name="Pack Découverte Smoothies" data-product-price="12000" data-product-image="images/product-12.jpg" data-product-url="product-single.html" data-product-category="Jus pressés">
-                        <div class="product-card__image">
-                            <img src="images/category-3.jpg" alt="Pack de smoothies">
-                        </div>
-                        <div class="product-card__body">
-                            <span class="product-card__category">Jus pressés</span>
-                            <h3 class="product-card__title"><a href="product-single.html">Pack Découverte Smoothies</a></h3>
-                            <p>6 recettes signature · riche en fibres et sans sucres ajoutés.</p>
-                            <p class="product-card__price">12&nbsp;000&nbsp;FCFA</p>
-                            <div class="product-card__actions">
-                                <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
-                                <a class="btn btn--outline" href="product-single.html">Détails</a>
-                            </div>
-                        </div>
-                    </article>
+                <div class="catalogue-meta">
+                    <span class="badge badge--accent">En stock</span>
+                    <span class="catalogue-meta__count" data-product-count>0 résultat</span>
                 </div>
-                <nav class="pagination" aria-label="Pagination boutique">
-                    <a class="pagination__control is-disabled" href="#" aria-disabled="true">Précédent</a>
-                    <a class="pagination__page is-active" href="#">1</a>
-                    <a class="pagination__page" href="#">2</a>
-                    <a class="pagination__page" href="#">3</a>
-                    <a class="pagination__control" href="#">Suivant</a>
+                <div class="product-grid" data-product-grid></div>
+                <div class="catalogue-empty" data-product-empty hidden>
+                    <h3>Aucun produit ne correspond encore à vos filtres</h3>
+                    <p>Essayez d'élargir la recherche ou de réinitialiser les critères.</p>
+                    <button class="btn btn--outline" type="button" data-category-reset>Réinitialiser les filtres</button>
+                </div>
+                <nav class="pagination" aria-label="Pagination boutique" data-pagination hidden>
+                    <button class="pagination__control is-disabled" type="button" data-pagination-prev aria-disabled="true">Précédent</button>
+                    <div class="pagination__pages" data-pagination-pages></div>
+                    <button class="pagination__control" type="button" data-pagination-next aria-disabled="false">Suivant</button>
                 </nav>
             </div>
         </section>

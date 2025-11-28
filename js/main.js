@@ -2,11 +2,249 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'vegefoods-cart-v1';
+    const PRODUCT_DETAIL_KEY = 'vegefoods-selected-product';
     const DELIVERY_FREE_THRESHOLD = 40000;
     const DELIVERY_FEE = 2000;
+    const THEME_KEY = 'biopanier-theme';
     const PROMO_CODES = {
         BIENVENUE: { type: 'percent', value: 10, label: 'Bienvenue -10%' },
     };
+    const DEFAULT_PRODUCTS = {
+        'panier-vitamine-8kg': {
+            name: 'Panier vitaminé 8kg',
+            price: 12500,
+            image: 'images/product-1.jpg',
+            category: 'Panier découverte',
+            badge: 'Best-seller',
+        },
+        'box-famille-veggie': {
+            name: 'Box famille veggie',
+            price: 15900,
+            image: 'images/product-5.jpg',
+            category: 'Box hebdo',
+            badge: 'Box hebdo',
+        },
+        'haricots-verts-croquants': {
+            name: 'Haricots verts croquants',
+            price: 2400,
+            image: 'images/product-3.jpg',
+            category: 'Primeur',
+            badge: 'Primeur',
+        },
+        'pack-detox-3-jours': {
+            name: 'Pack detox 3 jours',
+            price: 17500,
+            image: 'images/product-8.jpg',
+            category: 'Atelier jus',
+            badge: 'Cure jus',
+        },
+        'panier-essentiel-6kg': {
+            name: 'Panier Essentiel 6kg',
+            price: 10900,
+            image: 'images/product-6.jpg',
+            category: 'Paniers hebdo',
+            badge: 'Nouveau',
+        },
+        'fraises-bafoussam': {
+            name: 'Fraises de Bafoussam',
+            price: 3800,
+            image: 'images/product-2.jpg',
+            category: 'Fruits',
+            badge: 'Récolte locale',
+        },
+        'carottes-granny-bio': {
+            name: 'Carottes Granny Bio',
+            price: 2900,
+            image: 'images/product-7.jpg',
+            category: 'Fruits',
+            badge: 'Croquantes',
+        },
+        'jus-green-glow': {
+            name: 'Jus Green Glow',
+            price: 2200,
+            image: 'images/product-11.jpg',
+            category: 'Jus pressés',
+            badge: 'Best-seller',
+        },
+        'mix-crudites-15kg': {
+            name: 'Mix crudités 1,5kg',
+            price: 4500,
+            image: 'images/product-5.jpg',
+            category: 'Légumes',
+            badge: 'Prêt à cuisiner',
+        },
+        'chou-rouge-tendre': {
+            name: 'Chou rouge tendre',
+            price: 1800,
+            image: 'images/product-4.jpg',
+            category: 'Légumes',
+            badge: 'Ultra frais',
+        },
+        'mix-snacks-energetiques': {
+            name: 'Mix snacks énergétiques',
+            price: 5200,
+            image: 'images/product-9.jpg',
+            category: 'Épicerie fine',
+            badge: 'Sans additifs',
+        },
+        'pack-decouverte-smoothies': {
+            name: 'Pack Découverte Smoothies',
+            price: 12000,
+            image: 'images/product-12.jpg',
+            category: 'Jus pressés',
+            badge: 'Dégustation',
+        },
+    };
+    const CATEGORY_SLUG_MAP = {
+        panier: 'panier',
+        paniers: 'panier',
+        'paniers hebdo': 'panier',
+        fruits: 'fruits',
+        primeur: 'fruits',
+        legumes: 'legumes',
+        'légumes': 'legumes',
+        'jus presses': 'jus',
+        'jus': 'jus',
+        boissons: 'jus',
+        epicerie: 'epicerie',
+        'épicerie': 'epicerie',
+        'epicerie fine': 'epicerie',
+        'épicerie fine': 'epicerie',
+    };
+    const BLOG_POSTS = {
+        'empreinte-carbone': {
+            slug: 'empreinte-carbone',
+            title: 'Réduire son empreinte carbone en cuisinant local',
+            category: 'Impact',
+            date: '15 mai 2025',
+            readTime: '12 minutes de lecture',
+            author: 'Megane Tsaffo',
+            heroImage: 'images/category.jpg',
+            inlineImage: 'images/image_3.jpg',
+            tags: ['Circuits courts', 'Zero waste', 'Saison'],
+            quote: '« Chaque panier livré représente 1,2 kg de CO₂ économisé par rapport à une chaîne conventionnelle » — Boris Ngoa',
+            sections: [
+                { type: 'p', text: "Adopter une cuisine responsable ne signifie pas renoncer au plaisir gustatif. Chez BioPanier, nous accompagnons plus de 12 000 familles et 80 restaurants pour élaborer des menus qui respectent la planète." },
+                { type: 'h2', text: '1. Valoriser les circuits ultra-courts' },
+                { type: 'p', text: "Choisissez des produits issus de fermes situées à moins de 150 km : vous réduisez l'empreinte transport et soutenez les producteurs locaux." },
+                { type: 'blockquote', text: 'Notre hub logistique mutualise les trajets pour limiter les retours à vide.' },
+                { type: 'h3', text: 'Conseils pratiques' },
+                { type: 'ul', items: ['Planifiez vos menus chaque semaine.', 'Transformez les surplus en pickles, pestos ou confitures.', 'Optimisez le frigo en respectant les zones de température.'] },
+                { type: 'h2', text: '2. Cuisiner les légumes de saison' },
+                { type: 'p', text: 'Une aubergine hors saison peut générer 4x plus d’émissions. Appuyez-vous sur les paniers hebdo pour rester dans le calendrier.' },
+                { type: 'h2', text: '3. Passer en énergie verte' },
+                { type: 'p', text: 'Induction, cuisson vapeur douce, fours éco-performants : réduisez la consommation énergétique sans sacrifier le goût.' },
+                { type: 'h2', text: '4. Réduire le gaspillage à la source' },
+                { type: 'p', text: 'Fiches anti-gaspi personnalisées, chips d’épluchures, pestos de fanes : chaque geste compte pour une cuisine circulaire.' },
+            ],
+            cta: {
+                title: 'Téléchargez notre guide transition cuisine durable',
+                text: "Un PDF de 20 pages avec des recettes et des checklists d'équipements.",
+            },
+        },
+        'smoothies-verts': {
+            slug: 'smoothies-verts',
+            title: '3 smoothies verts pour booster votre matinée',
+            category: 'Recettes',
+            date: '28 avril 2025',
+            readTime: '8 minutes de lecture',
+            author: 'Wilfred Ngassa',
+            heroImage: 'images/image_1.jpg',
+            inlineImage: 'images/product-11.jpg',
+            tags: ['Recettes', 'Petit-déjeuner', 'Fibres'],
+            quote: '« Un bon smoothie associe fibres, protéines et bons gras pour tenir jusqu’à midi. »',
+            sections: [
+                { type: 'p', text: 'Des recettes rapides, riches en fibres, adaptées aux produits du panier vitaminé.' },
+                { type: 'h2', text: '1. Green Glow express' },
+                { type: 'ul', items: ['1 poignée d’épinards', '1/2 mangue', '1 banane', '200 ml d’eau de coco', '1 c. à soupe de graines de chia'] },
+                { type: 'p', text: 'Mixez 30 secondes. Ajoutez du jus de citron vert pour relever.' },
+                { type: 'h2', text: '2. Morning cacao-protéines' },
+                { type: 'ul', items: ['200 ml de lait végétal', '1 banane', '1 c. à soupe de cacao', '1 c. à soupe de beurre de cacahuète', 'Flocons d’avoine'] },
+                { type: 'p', text: 'Mixez et laissez 2 minutes pour épaissir.' },
+                { type: 'h2', text: '3. Boost tropical' },
+                { type: 'ul', items: ['Ananas', 'Papaye', 'Menthe', 'Gingembre frais', 'Eau ou lait de coco'] },
+                { type: 'p', text: 'Idéal après sport : vitamines + hydratation.' },
+            ],
+            cta: {
+                title: 'Téléchargez le mini e-book smoothies',
+                text: '6 recettes prêtes en 5 minutes, adaptées aux paniers BioPanier.',
+            },
+        },
+        'portrait-rosine': {
+            slug: 'portrait-rosine',
+            title: 'Portrait · Rosine, productrice à Nkometou',
+            category: 'Portraits',
+            date: '10 avril 2025',
+            readTime: '6 minutes de lecture',
+            author: 'Charline Tchaweu',
+            heroImage: 'images/image_2.jpg',
+            inlineImage: 'images/person_1.jpg',
+            tags: ['Producteurs', 'Agroforesterie', 'Impact'],
+            quote: '« Diversifier les variétés protège mes sols et nos assiettes. » — Rosine',
+            sections: [
+                { type: 'p', text: 'Rosine cultive des légumes-feuilles en agroforesterie et forme d’autres agriculteurs.' },
+                { type: 'h2', text: 'Une ferme qui inspire' },
+                { type: 'p', text: 'Intercropping manioc, bananier, légumineuses : la parcelle reste fertile et humide.' },
+                { type: 'h2', text: 'Transmettre les pratiques' },
+                { type: 'p', text: 'Ateliers mensuels avec 25 producteurs, démonstrations compost et couverture des sols.' },
+                { type: 'h2', text: 'Partenaire BioPanier' },
+                { type: 'p', text: 'Rosine livre 3 fois par semaine. Ses salades et légumes-feuilles composent nos paniers Green.' },
+            ],
+            cta: {
+                title: 'Visitez la ferme de Rosine',
+                text: 'Inscrivez-vous à la prochaine visite terrain depuis votre espace client.',
+            },
+        },
+        'meal-prep-ete': {
+            slug: 'meal-prep-ete',
+            title: "Meal prep d'été : 5 idées prêtes en 30 minutes",
+            category: 'Organisation',
+            date: '2 mai 2025',
+            readTime: '10 minutes de lecture',
+            author: 'Jordan Toulepi',
+            heroImage: 'images/image_3.jpg',
+            inlineImage: 'images/product-6.jpg',
+            tags: ['Organisation', 'Batch cooking', 'Famille'],
+            quote: '« Préparez 3 bases, déclinez-les en 5 repas : gain de temps assuré. »',
+            sections: [
+                { type: 'p', text: 'Des plats colorés et équilibrés avec les légumes de la semaine.' },
+                { type: 'h2', text: 'Base 1 : légumes rôtis' },
+                { type: 'p', text: 'Patates douces, carottes, courgettes à 190°C pendant 25 minutes. Utilisez-les en bowl, tacos ou omelette.' },
+                { type: 'h2', text: 'Base 2 : céréales & légumineuses' },
+                { type: 'p', text: 'Quinoa + pois chiches cuits d’avance pour des salades prêtes en 2 minutes.' },
+                { type: 'h2', text: 'Base 3 : sauces rapides' },
+                { type: 'ul', items: ['Pesto de fanes', 'Sauce yaourt-citron', 'Vinaigrette miel-moutarde'] },
+                { type: 'p', text: 'Assemblez chaque soir : 10 minutes suffisent pour un repas complet.' },
+            ],
+            cta: {
+                title: 'Téléchargez le plan de batch cooking',
+                text: 'Planning sur 5 jours + liste de courses liée aux paniers hebdo.',
+            },
+        },
+    };
+    const PRODUCT_DESCRIPTIONS = {
+        'panier-vitamine-8kg': '15 variétés de saison pour couvrir 5 repas + jus maison.',
+        'box-famille-veggie': 'Box familiale 10 kg avec menus guidés pour 4 personnes.',
+        'haricots-verts-croquants': 'Haricots verts très fins, prêts à poêler en 5 minutes.',
+        'pack-detox-3-jours': 'Cure detox · 6 jus pressés à froid pour 3 jours.',
+        'panier-essentiel-6kg': 'Mix de 5 fruits et 8 légumes de saison pour 3 repas équilibrés.',
+        'fraises-bafoussam': 'Barquette de 500 g cueillie le matin même sur Bafoussam.',
+        'carottes-granny-bio': 'Croquantes et acidulées, cultivées sur la ferme d’Obala.',
+        'jus-green-glow': 'Concombre, pomme, persil, citron vert · pression à froid.',
+        'mix-crudites-15kg': 'Carotte, concombre, betterave, laitue croquante · prêt à cuisiner.',
+        'chou-rouge-tendre': 'Texture croquante, idéal pour salades et pickles maison.',
+        'mix-snacks-energetiques': 'Noix de cajou grillées, ananas séché, chips de plantain.',
+        'pack-decouverte-smoothies': '6 recettes signature, riche en fibres et sans sucres ajoutés.',
+    };
+    const SHOP_PRODUCTS = Object.entries(DEFAULT_PRODUCTS).map(([id, product], index) => ({
+        id,
+        ...product,
+        description: PRODUCT_DESCRIPTIONS[id] || 'Récolté chaque matin sur nos fermes partenaires.',
+        badge: product.badge || product.category || 'BioPanier',
+        url: buildProductUrl({ id }),
+        popularity: index,
+    }));
+    const SHOP_PAGINATION_SIZE = 8;
 
     const body = document.body;
     const navToggle = document.querySelector('[data-nav-toggle]');
@@ -94,6 +332,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { subtotal, discount, delivery, total, promo };
     }
+    function normalizeCategorySlug(value) {
+        const base = (value || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const compact = base.replace(/[^a-z0-9]+/g, ' ').trim();
+        const direct = CATEGORY_SLUG_MAP[compact] || CATEGORY_SLUG_MAP[compact.replace(/\s+/g, ' ')] || compact.replace(/\s+/g, '-');
+        return direct || 'all';
+    }
+
+    function buildProductUrl(product) {
+        if (!product?.id) {
+            return product?.url || 'product-single.html';
+        }
+        return `product-single.html?product=${encodeURIComponent(product.id)}`;
+    }
+
+    function saveSelectedProduct(product) {
+        if (!product?.id) {
+            return;
+        }
+        const payload = {
+            ...DEFAULT_PRODUCTS[product.id],
+            ...product,
+            url: buildProductUrl(product),
+        };
+        try {
+            localStorage.setItem(PRODUCT_DETAIL_KEY, JSON.stringify(payload));
+        } catch (error) {
+            console.warn('Impossible de mémoriser le produit sélectionné', error);
+        }
+    }
+
+    function loadSelectedProduct() {
+        try {
+            const raw = JSON.parse(localStorage.getItem(PRODUCT_DETAIL_KEY) || 'null');
+            if (raw?.id) {
+                return raw;
+            }
+        } catch (error) {
+            console.warn('Produit sélectionné invalide', error);
+        }
+        return null;
+    }
+
+    function getProductFromSlug(slug) {
+        if (!slug) {
+            return null;
+        }
+        const stored = loadSelectedProduct();
+        if (stored?.id === slug) {
+            return stored;
+        }
+        if (DEFAULT_PRODUCTS[slug]) {
+            return { id: slug, ...DEFAULT_PRODUCTS[slug], url: buildProductUrl({ id: slug }) };
+        }
+        return null;
+    }
+
+    function getSlugFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('product') || '';
+    }
 function addToCart(product, quantity = 1) {
         if (!product?.id || !product?.name) {
             return;
@@ -112,7 +410,7 @@ function addToCart(product, quantity = 1) {
                 price: Math.max(0, Number(product.price) || 0),
                 quantity: finalQuantity,
                 image: product.image || '',
-                url: product.url || 'product-single.html',
+                url: buildProductUrl(product),
                 category: product.category || '',
             });
         }
@@ -434,13 +732,17 @@ function addToCart(product, quantity = 1) {
             name: card.dataset.productName,
             price: Number(card.dataset.productPrice) || 0,
             image: card.dataset.productImage || '',
-            url: card.dataset.productUrl || 'product-single.html',
+            url: card.dataset.productUrl || buildProductUrl({ id: card.dataset.productId }),
             category: card.dataset.productCategory || '',
         };
     }
 
     function initAddToCartButtons() {
         document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
+            if (button.dataset.bound === 'true') {
+                return;
+            }
+            button.dataset.bound = 'true';
             button.addEventListener('click', () => {
                 const product = getProductFromElement(button);
                 if (!product) {
@@ -453,6 +755,22 @@ function addToCart(product, quantity = 1) {
                 }
                 addToCart(product, quantity);
             });
+        });
+    }
+
+    function initProductDetailLinks() {
+        document.querySelectorAll('[data-product-card] a[href*="product-single"]').forEach((link) => {
+            if (link.dataset.bound === 'true') {
+                return;
+            }
+            link.dataset.bound = 'true';
+            const product = getProductFromElement(link);
+            if (!product?.id) {
+                return;
+            }
+            const detailUrl = buildProductUrl(product);
+            link.setAttribute('href', detailUrl);
+            link.addEventListener('click', () => saveSelectedProduct(product));
         });
     }
 
@@ -474,6 +792,345 @@ function addToCart(product, quantity = 1) {
         });
     }
 
+    const shopState = {
+        page: 1,
+        perPage: SHOP_PAGINATION_SIZE,
+        sort: 'popular',
+        filters: {
+            category: 'all',
+            badge: 'all',
+            search: '',
+            priceMin: '',
+            priceMax: '',
+        },
+    };
+
+    function filterShopProducts(list) {
+        const { category, badge, search, priceMin, priceMax } = shopState.filters;
+        const normalizedSearch = search.trim().toLowerCase();
+        const min = Number(priceMin) || 0;
+        const max = Number(priceMax) || 0;
+
+        return list.filter((product) => {
+            const categorySlug = normalizeCategorySlug(product.category);
+            const badgeSlug = normalizeCategorySlug(product.badge);
+
+            const categoryOk = category === 'all' || categorySlug === category || categorySlug.startsWith(category);
+            const badgeOk = badge === 'all' || badgeSlug === badge;
+            const priceOk = (!min || product.price >= min) && (!max || product.price <= max);
+            const textOk =
+                !normalizedSearch ||
+                product.name.toLowerCase().includes(normalizedSearch) ||
+                (product.description && product.description.toLowerCase().includes(normalizedSearch));
+
+            return categoryOk && badgeOk && priceOk && textOk;
+        });
+    }
+
+    function sortShopProducts(list) {
+        const sorted = list.slice();
+        switch (shopState.sort) {
+            case 'price-asc':
+                sorted.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                sorted.sort((a, b) => b.price - a.price);
+                break;
+            case 'new':
+                sorted.sort((a, b) => b.popularity - a.popularity);
+                break;
+            case 'popular':
+            default:
+                sorted.sort((a, b) => a.popularity - b.popularity);
+        }
+        return sorted;
+    }
+
+    function paginateShopProducts(list) {
+        const totalPages = Math.max(1, Math.ceil(list.length / shopState.perPage));
+        const currentPage = Math.min(Math.max(1, shopState.page), totalPages);
+        const start = (currentPage - 1) * shopState.perPage;
+        const end = start + shopState.perPage;
+        return {
+            items: list.slice(start, end),
+            totalPages,
+            currentPage,
+        };
+    }
+
+    function renderShopProducts() {
+        const productGrid = document.querySelector('[data-product-grid]');
+        const emptyState = document.querySelector('[data-product-empty]');
+        const countLabel = document.querySelector('[data-product-count]');
+        const pagination = document.querySelector('[data-pagination]');
+        const paginationPages = document.querySelector('[data-pagination-pages]');
+        const paginationPrev = document.querySelector('[data-pagination-prev]');
+        const paginationNext = document.querySelector('[data-pagination-next]');
+
+        if (!productGrid) {
+            return;
+        }
+
+        const filtered = filterShopProducts(SHOP_PRODUCTS);
+        const sorted = sortShopProducts(filtered);
+        const { items, totalPages, currentPage } = paginateShopProducts(sorted);
+        shopState.page = currentPage;
+
+        productGrid.innerHTML = '';
+
+        items.forEach((product) => {
+            const card = document.createElement('article');
+            card.className = 'product-card';
+            card.setAttribute('data-reveal', '');
+            card.setAttribute('data-product-card', '');
+            card.dataset.productId = product.id;
+            card.dataset.productName = product.name;
+            card.dataset.productPrice = product.price;
+            card.dataset.productImage = product.image;
+            card.dataset.productUrl = product.url;
+            card.dataset.productCategory = product.category;
+            card.dataset.categorySlug = normalizeCategorySlug(product.category);
+            card.innerHTML = `
+                <div class="product-card__image">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-card__body">
+                    <span class="product-card__category">${product.category || 'BioPanier'}</span>
+                    <h3 class="product-card__title"><a href="${product.url}">${product.name}</a></h3>
+                    <p>${product.description}</p>
+                    <p class="product-card__price">${formatPrice(product.price)}</p>
+                    <div class="product-card__actions">
+                        <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                        <a class="btn btn--outline" href="${product.url}">Détails</a>
+                    </div>
+                </div>
+            `;
+            productGrid.appendChild(card);
+        });
+
+        if (countLabel) {
+            const total = filtered.length;
+            const start = filtered.length === 0 ? 0 : (currentPage - 1) * shopState.perPage + 1;
+            const end = Math.min(currentPage * shopState.perPage, total);
+            countLabel.textContent = `${total} résultat${total > 1 ? 's' : ''}${total ? ` · ${start}–${end}` : ''}`;
+        }
+
+        if (emptyState) {
+            emptyState.hidden = filtered.length > 0;
+        }
+
+        if (pagination && paginationPages && paginationPrev && paginationNext) {
+            pagination.hidden = totalPages <= 1;
+            paginationPages.innerHTML = '';
+
+            paginationPrev.classList.toggle('is-disabled', currentPage === 1);
+            paginationPrev.setAttribute('aria-disabled', currentPage === 1 ? 'true' : 'false');
+            paginationNext.classList.toggle('is-disabled', currentPage === totalPages);
+            paginationNext.setAttribute('aria-disabled', currentPage === totalPages ? 'true' : 'false');
+
+            for (let page = 1; page <= totalPages; page += 1) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'pagination__page';
+                if (page === currentPage) {
+                    btn.classList.add('is-active');
+                }
+                btn.textContent = String(page);
+                btn.dataset.page = String(page);
+                paginationPages.appendChild(btn);
+            }
+        }
+
+        setupRevealAnimations();
+        initAddToCartButtons();
+        initProductDetailLinks();
+    }
+
+    function initShopFilters() {
+        if (!document.body.classList.contains('page-shop')) {
+            return;
+        }
+        const categorySelect = document.querySelector('[data-category-filter]');
+        const sortSelect = document.querySelector('[data-sort-filter]');
+        const resetBtn = document.querySelector('[data-category-reset]');
+        const searchInput = document.querySelector('[data-search-filter]');
+        const priceMinInput = document.querySelector('[data-price-min]');
+        const priceMaxInput = document.querySelector('[data-price-max]');
+        const badgeSelect = document.querySelector('[data-badge-filter]');
+        const pagination = document.querySelector('[data-pagination]');
+
+        const applyFilters = () => {
+            shopState.filters.category = categorySelect?.value || 'all';
+            shopState.sort = sortSelect?.value || 'popular';
+            shopState.filters.search = searchInput?.value || '';
+            shopState.filters.priceMin = priceMinInput?.value || '';
+            shopState.filters.priceMax = priceMaxInput?.value || '';
+            shopState.filters.badge = badgeSelect?.value || 'all';
+            shopState.page = 1;
+            renderShopProducts();
+        };
+
+        categorySelect?.addEventListener('change', () => applyFilters());
+        sortSelect?.addEventListener('change', () => applyFilters());
+        searchInput?.addEventListener('input', () => applyFilters());
+        priceMinInput?.addEventListener('change', () => applyFilters());
+        priceMaxInput?.addEventListener('change', () => applyFilters());
+        badgeSelect?.addEventListener('change', () => applyFilters());
+
+        resetBtn?.addEventListener('click', () => {
+            if (categorySelect) categorySelect.value = 'all';
+            if (sortSelect) sortSelect.value = 'popular';
+            if (searchInput) searchInput.value = '';
+            if (priceMinInput) priceMinInput.value = '';
+            if (priceMaxInput) priceMaxInput.value = '';
+            if (badgeSelect) badgeSelect.value = 'all';
+            shopState.page = 1;
+            shopState.filters = {
+                category: 'all',
+                badge: 'all',
+                search: '',
+                priceMin: '',
+                priceMax: '',
+            };
+            shopState.sort = 'popular';
+            renderShopProducts();
+        });
+
+        pagination?.addEventListener('click', (event) => {
+            const pageBtn = event.target.closest('[data-page]');
+            const isPrev = event.target.closest('[data-pagination-prev]');
+            const isNext = event.target.closest('[data-pagination-next]');
+
+            if (pageBtn) {
+                shopState.page = Number(pageBtn.dataset.page) || 1;
+                renderShopProducts();
+            }
+
+            if (isPrev) {
+                shopState.page = Math.max(1, shopState.page - 1);
+                renderShopProducts();
+            }
+
+            if (isNext) {
+                shopState.page += 1;
+                renderShopProducts();
+            }
+        });
+
+        renderShopProducts();
+    }
+
+    function renderRelatedProducts(productId) {
+        const relatedContainer = document.querySelector('[data-product-related]');
+        if (!relatedContainer) {
+            return;
+        }
+
+        const candidates = Object.keys(DEFAULT_PRODUCTS).filter((slug) => slug !== productId);
+        const suggestions = candidates.slice(0, 3);
+
+        if (!suggestions.length) {
+            return;
+        }
+
+        relatedContainer.innerHTML = '';
+        suggestions.forEach((slug) => {
+            const product = DEFAULT_PRODUCTS[slug];
+            const card = document.createElement('article');
+            card.className = 'product-card';
+            card.setAttribute('data-product-card', '');
+            card.dataset.productId = slug;
+            card.dataset.productName = product.name;
+            card.dataset.productPrice = product.price;
+            card.dataset.productImage = product.image;
+            card.dataset.productUrl = buildProductUrl({ id: slug });
+            card.dataset.productCategory = product.category;
+            card.innerHTML = `
+                <div class="product-card__image">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-card__body">
+                    <span class="product-card__category">${product.category || 'BioPanier'}</span>
+                    <h3 class="product-card__title"><a href="${buildProductUrl({ id: slug })}">${product.name}</a></h3>
+                    <p class="product-card__price">${formatPrice(product.price)}</p>
+                    <div class="product-card__actions">
+                        <button class="btn btn--primary" type="button" data-add-to-cart>Ajouter</button>
+                        <a class="btn btn--outline" href="${buildProductUrl({ id: slug })}">Voir détails</a>
+                    </div>
+                </div>
+            `;
+            relatedContainer.appendChild(card);
+        });
+
+        initAddToCartButtons();
+        initProductDetailLinks();
+    }
+
+    function renderProductDetailPage() {
+        const detail = document.querySelector('[data-product-detail]');
+        if (!detail) {
+            return;
+        }
+
+        const slugFromUrl = getSlugFromUrl();
+        const fallbackFromDom = getProductFromElement(detail);
+        const product =
+            getProductFromSlug(slugFromUrl) ||
+            (fallbackFromDom?.id ? { ...DEFAULT_PRODUCTS[fallbackFromDom.id], ...fallbackFromDom } : null);
+
+        if (!product?.id) {
+            return;
+        }
+
+        const breadcrumb = document.querySelector('[data-product-breadcrumb]');
+        const title = detail.querySelector('[data-product-title]');
+        const price = detail.querySelector('[data-product-price-display]');
+        const priceNote = detail.querySelector('[data-product-price-note]');
+        const mainImage = detail.querySelector('[data-product-main-image]');
+        const badge = detail.querySelector('[data-product-badge]');
+        const status = document.querySelector('[data-product-status]');
+        const tags = detail.querySelector('[data-product-tags]');
+
+        const resolved = {
+            ...product,
+            name: product.name || 'Produit BioPanier',
+            price: Math.max(0, Number(product.price) || 0),
+            image: product.image || 'images/product-1.jpg',
+            category: product.category || '',
+            badge: product.badge || product.category || 'En stock',
+            url: buildProductUrl(product),
+        };
+
+        detail.dataset.productId = resolved.id;
+        detail.dataset.productSlug = resolved.id;
+        detail.dataset.productName = resolved.name;
+        detail.dataset.productPrice = resolved.price;
+        detail.dataset.productImage = resolved.image;
+        detail.dataset.productUrl = resolved.url;
+        detail.dataset.productCategory = resolved.category;
+
+        breadcrumb && (breadcrumb.textContent = resolved.name);
+        title && (title.textContent = resolved.name);
+        price && (price.textContent = formatPrice(resolved.price));
+        priceNote && (priceNote.textContent = resolved.category ? `${resolved.category} · Livraison incluse` : 'Livraison incluse');
+        mainImage && mainImage.setAttribute('src', resolved.image);
+        mainImage && mainImage.setAttribute('alt', resolved.name);
+        badge && (badge.textContent = resolved.badge);
+        status && (status.textContent = `${resolved.category || 'En stock'} · Livraison 24h`);
+
+        if (tags && resolved.category) {
+            tags.innerHTML = '';
+            ['Bio local', resolved.category, 'Fraîcheur garantie'].forEach((tagLabel) => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                span.textContent = tagLabel;
+                tags.appendChild(span);
+            });
+        }
+
+        saveSelectedProduct(resolved);
+        renderRelatedProducts(resolved.id);
+    }
 
     function initProductQuantityControls() {
         document.querySelectorAll('[data-quantity-selector]').forEach((selector) => {
@@ -668,6 +1325,43 @@ function initCheckoutButton() {
         });
     }
 
+    function initPodcastPlayer() {
+        const toggle = document.querySelector('[data-podcast-toggle]');
+        const audio = document.querySelector('[data-podcast-audio]');
+        const status = document.querySelector('[data-podcast-status]');
+        if (!toggle || !audio) {
+            return;
+        }
+
+        const setLabel = (isPlaying, message) => {
+            toggle.textContent = isPlaying ? 'Mettre en pause' : "Écouter l'épisode";
+            toggle.setAttribute('aria-pressed', String(isPlaying));
+            toggle.setAttribute('aria-label', isPlaying ? 'Mettre le podcast en pause' : "Lancer le podcast");
+            toggle.classList.toggle('is-playing', isPlaying);
+            if (status) {
+                status.textContent = message || '';
+            }
+        };
+
+        setLabel(!audio.paused && !audio.ended);
+
+        toggle.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.currentTime = 0;
+                audio.play().then(() => setLabel(true)).catch((error) => {
+                    console.warn('Podcast audio error', error);
+                    setLabel(false, "Impossible de lire l'épisode");
+                });
+            } else {
+                audio.pause();
+                setLabel(false);
+            }
+        });
+
+        audio.addEventListener('ended', () => setLabel(false));
+        audio.addEventListener('pause', () => setLabel(false));
+    }
+
     function setupRevealAnimations() {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const revealEls = document.querySelectorAll('[data-reveal]');
@@ -788,17 +1482,143 @@ function initCheckoutButton() {
             toggleHeaderState();
             window.addEventListener('scroll', toggleHeaderState, { passive: true });
     }
+
+    function initThemeToggle() {
+        const root = document.documentElement;
+        const stored = localStorage.getItem(THEME_KEY);
+        if (stored === 'dark') {
+            root.classList.add('theme-dark');
+        }
+
+        const headerInner = document.querySelector('.site-header__inner');
+        if (!headerInner) {
+            return;
+        }
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'theme-toggle';
+        toggle.setAttribute('data-theme-toggle', '');
+        headerInner.appendChild(toggle);
+
+        const apply = (mode) => {
+            if (mode === 'dark') {
+                root.classList.add('theme-dark');
+                localStorage.setItem(THEME_KEY, 'dark');
+                toggle.textContent = '🌙';
+                toggle.setAttribute('aria-label', 'Basculer en thème clair');
+            } else {
+                root.classList.remove('theme-dark');
+                localStorage.setItem(THEME_KEY, 'light');
+                toggle.textContent = '☀️';
+                toggle.setAttribute('aria-label', 'Basculer en thème sombre');
+            }
+        };
+
+        apply(root.classList.contains('theme-dark') ? 'dark' : 'light');
+
+        toggle.addEventListener('click', () => {
+            const next = root.classList.contains('theme-dark') ? 'light' : 'dark';
+            apply(next);
+        });
+    }
+
+    function renderBlogPostPage() {
+        const article = document.querySelector('[data-blog-article]');
+        if (!article) {
+            return;
+        }
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('post') || 'empreinte-carbone';
+        const post = BLOG_POSTS[slug] || BLOG_POSTS['empreinte-carbone'];
+
+        const titleEl = article.querySelector('[data-blog-title]');
+        const dateEl = article.querySelector('[data-blog-date]');
+        const timeEl = article.querySelector('[data-blog-time]');
+        const authorEl = article.querySelector('[data-blog-author]');
+        const tagContainer = article.querySelector('[data-blog-tags]');
+        const heroLabel = article.querySelector('[data-blog-hero-label]');
+        const coverEl = article.querySelector('[data-blog-cover]');
+        const inlineCoverEl = article.querySelector('[data-blog-inline]');
+        const quoteEl = article.querySelector('[data-blog-quote]');
+        const bodyEl = article.querySelector('[data-blog-body]');
+        const ctaTitle = article.querySelector('[data-blog-cta-title]');
+        const ctaText = article.querySelector('[data-blog-cta-text]');
+        const authorNameEl = article.querySelector('[data-blog-author-name]');
+        const breadcrumb = document.querySelector('[data-blog-breadcrumb]');
+
+        titleEl && (titleEl.textContent = post.title);
+        breadcrumb && (breadcrumb.textContent = post.title);
+        dateEl && (dateEl.textContent = post.date);
+        timeEl && (timeEl.textContent = post.readTime);
+        authorEl && (authorEl.textContent = post.author);
+        authorNameEl && (authorNameEl.textContent = post.author);
+
+        if (categoryEl) categoryEl.textContent = post.category;
+        if (heroLabel) heroLabel.textContent = post.category;
+
+        if (tagContainer) {
+            tagContainer.innerHTML = '';
+            post.tags.forEach((tag) => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                span.textContent = tag;
+                tagContainer.appendChild(span);
+            });
+        }
+
+        coverEl && coverEl.setAttribute('src', post.heroImage);
+        coverEl && coverEl.setAttribute('alt', post.title);
+        inlineCoverEl && inlineCoverEl.setAttribute('src', post.inlineImage);
+        inlineCoverEl && inlineCoverEl.setAttribute('alt', post.title);
+        quoteEl && (quoteEl.textContent = post.quote);
+
+        if (bodyEl) {
+            bodyEl.innerHTML = '';
+            post.sections.forEach((section) => {
+                if (section.type === 'p') {
+                    const p = document.createElement('p');
+                    p.textContent = section.text;
+                    bodyEl.appendChild(p);
+                } else if (section.type === 'h2' || section.type === 'h3') {
+                    const el = document.createElement(section.type);
+                    el.textContent = section.text;
+                    bodyEl.appendChild(el);
+                } else if (section.type === 'blockquote') {
+                    const bq = document.createElement('blockquote');
+                    bq.textContent = section.text;
+                    bodyEl.appendChild(bq);
+                } else if (section.type === 'ul' && Array.isArray(section.items)) {
+                    const ul = document.createElement('ul');
+                    section.items.forEach((item) => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        ul.appendChild(li);
+                    });
+                    bodyEl.appendChild(ul);
+                }
+            });
+        }
+
+        if (ctaTitle) ctaTitle.textContent = post.cta.title;
+        if (ctaText) ctaText.textContent = post.cta.text;
+    }
    
     setupNavigation();
     setupHeaderOnScroll();
+    initThemeToggle();
     setupRevealAnimations();
+    initPodcastPlayer();
     initProductQuantityControls();
     initAddToCartButtons();
+    initProductDetailLinks();
     initBuyNowButtons();
+    initShopFilters();
     initCartTableListeners();
     initCartPromoControls();
     initCheckoutButton();
     initCheckoutForm();
+    renderProductDetailPage();
+    renderBlogPostPage();
 
     refreshCartUI();
 
@@ -811,3 +1631,4 @@ function initCheckoutButton() {
         }
     });
 });
+        const categoryEl = article.querySelector('[data-blog-category]');

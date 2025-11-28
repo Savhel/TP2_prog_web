@@ -12,6 +12,44 @@
     gap: 0.75rem;
 }
 
+.filter-bar__range {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.catalogue-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.catalogue-meta__count {
+    color: var(--color-text);
+}
+
+.catalogue-empty {
+    margin-top: 1.75rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px dashed rgba(12, 26, 18, 0.1);
+    background: rgba(130, 174, 70, 0.06);
+    box-shadow: var(--shadow-sm);
+}
+
+.catalogue-empty h3 {
+    margin: 0 0 0.35rem 0;
+}
+
+.catalogue-empty p {
+    margin: 0 0 0.85rem 0;
+    color: var(--color-text-muted);
+}
+
 .pagination {
     display: inline-flex;
     gap: 0.65rem;
@@ -59,11 +97,20 @@
     gap: 1.25rem;
 }
 
+.theme-dark .subscription-panel {
+    background: rgba(18, 28, 20, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
 .subscription-panel__title {
     margin: 0;
     font-family: var(--font-heading);
     font-size: 1.2rem;
     color: var(--color-dark);
+}
+
+.theme-dark .subscription-panel__title {
+    color: var(--color-text);
 }
 
 .subscription-panel__list {
@@ -82,6 +129,10 @@
     padding: 0.85rem 1rem;
     border-radius: var(--radius-sm);
     font-weight: 600;
+}
+
+.theme-dark .subscription-panel__list li {
+    background: rgba(130, 174, 70, 0.12);
 }
 
 .subscription-panel__list strong {

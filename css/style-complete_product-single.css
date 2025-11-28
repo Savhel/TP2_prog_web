@@ -2,6 +2,10 @@
     background: linear-gradient(180deg, #f7faf4 0%, #ffffff 55%, #f2f6ef 100%);
 }
 
+.theme-dark .page-product main {
+    background: linear-gradient(180deg, #0d130d 0%, #0f1a12 55%, #0d130d 100%);
+}
+
 .product-detail {
     display: grid;
     gap: clamp(2rem, 4vw, 3rem);
@@ -16,6 +20,10 @@
     box-shadow: var(--shadow-sm);
     display: grid;
     gap: 1rem;
+}
+
+.theme-dark .product-gallery {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .product-gallery__thumbnails {
@@ -56,6 +64,11 @@
     box-shadow: var(--shadow-sm);
 }
 
+.theme-dark .composition {
+    background: rgba(18, 28, 20, 0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
 .composition h2 {
     margin-top: 0;
     font-family: var(--font-heading);
@@ -76,6 +89,10 @@
     display: grid;
     gap: 0.5rem;
     text-align: center;
+}
+
+.theme-dark .nutrition-card {
+    background: rgba(130, 174, 70, 0.12);
 }
 
 .nutrition-card h3 {
@@ -106,6 +123,10 @@
     gap: 1rem;
 }
 
+.theme-dark .care-panel {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
 .care-panel h3 {
     margin: 0;
     font-family: var(--font-heading);
@@ -118,6 +139,10 @@
     box-shadow: var(--shadow-sm);
     display: grid;
     gap: 0.75rem;
+}
+
+.theme-dark .review-card {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .review-card__meta {

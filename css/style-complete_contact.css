@@ -2,6 +2,10 @@
     background: linear-gradient(180deg, #f4f7f2 0%, #ffffff 55%, #eef3eb 100%);
 }
 
+.theme-dark .page-contact main {
+    background: linear-gradient(180deg, #0d130d 0%, #0f1a12 55%, #0d130d 100%);
+}
+
 .page-contact .hero__actions {
     margin-top: 1.75rem;
 }
@@ -21,6 +25,11 @@
     border-radius: var(--radius-sm);
     padding: 2rem;
     box-shadow: var(--shadow-sm);
+}
+
+.theme-dark .contact-form {
+    background: var(--color-surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .contact-checkbox label {
@@ -60,6 +69,19 @@
     border-radius: var(--radius-sm);
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
+}
+
+.theme-dark .faq-item {
+    background: rgba(18, 28, 20, 0.9);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.theme-dark .faq-item h3 {
+    color: var(--color-text);
+}
+
+.theme-dark .faq-item p {
+    color: var(--color-text-muted);
 }
 
 .faq-item h3 {
